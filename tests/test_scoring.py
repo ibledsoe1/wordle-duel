@@ -2,7 +2,7 @@
 import pytest
 from game_engine.scoring import LetterStatus, score_guess
 
-C, P, A = LetterStatus.CORRECT, LetterStatus.PRESENT, LetterStatus.ABSENT
+C, P, I = LetterStatus.CORRECT, LetterStatus.PRESENT, LetterStatus.INCORRECT
 
 
 # EP: valid class "exact match"
@@ -11,13 +11,13 @@ def test_exact_match_all_correct():
 
 
 # EP: valid class "no shared letters"
-def test_no_shared_letters_all_absent():
-    assert score_guess("sulky", "crane") == [A, A, A, A, A]
+def test_no_shared_letters_all_incorrect():
+    assert score_guess("sulky", "crane") == [I, I, I, I, I]
 
 
 # EP: valid class "duplicate letters" (guess has more copies than answer)
 def test_duplicate_letter_only_one_marked_present():
-    assert score_guess("speed", "abide") == [A, A, P, A, P]
+    assert score_guess("speed", "abide") == [I, I, P, I, P]
 
 
 # BVA: length just below the boundary (4) is invalid
