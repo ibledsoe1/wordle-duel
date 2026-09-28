@@ -21,12 +21,12 @@ def test_duplicate_letter_only_one_marked_present():
 
 
 # BVA: length just below the boundary (4) is invalid
-def test_boundary_length_four_raises():
+def test_boundary_length_too_short():
     with pytest.raises(ValueError):
         score_guess("cran", "crane")
 
 
 # BVA: length just above the boundary (6) is invalid
-def test_boundary_length_six_raises():
+def test_boundary_length_too_long():
     with pytest.raises(ValueError):
         score_guess("cranes", "crane")
