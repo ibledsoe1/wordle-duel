@@ -6,12 +6,12 @@ C, P, I = LetterStatus.CORRECT, LetterStatus.PRESENT, LetterStatus.INCORRECT
 
 
 # EP: valid class "exact match"
-def test_exact_match_all_correct():
+def test_all_correct_guess():
     assert score_guess("crane", "crane") == [C, C, C, C, C]
 
 
 # EP: valid class "no shared letters"
-def test_no_shared_letters_all_incorrect():
+def test_all_incorrect_guess():
     assert score_guess("sulky", "crane") == [I, I, I, I, I]
 
 
