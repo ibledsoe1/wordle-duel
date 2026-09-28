@@ -19,7 +19,7 @@ def score_guess(guess: str, answer: str) -> list[LetterStatus]:
         )
 
 
-    result = list[LetterStatus | None] = [None] * len(guess)
+    result: list[LetterStatus | None] = [None] * WORD_LENGTH
     remaining_letters = Counter(answer)
 
     # Find green letters
@@ -38,6 +38,8 @@ def score_guess(guess: str, answer: str) -> list[LetterStatus]:
             remaining_letters[g_letter] -= 1
         else:
             result[i] = LetterStatus.INCORRECT
+
+    return result
 
 def is_solved(statuses: list[LetterStatus]) -> bool:
     return all(status == LetterStatus.CORRECT for status in statuses)
