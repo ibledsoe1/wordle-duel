@@ -39,7 +39,7 @@ class PlayerState:
     finished_puzzles: list[FinishedPuzzleResult] = field(default_factory=list)
 
     @property
-    def solved_sount(self) -> int:
+    def solved_count(self) -> int:
         return sum(1 for puzzle in self.finished_puzzles if puzzle.solved)
 
     @property
@@ -69,6 +69,6 @@ class Match:
     # Server owns and mutates this, game_engine just defines the shape
 
     config: MatchConfig
-    players: dict[str, PlayerState] = field(default_factory=dict)
+    players: list[str, PlayerState] = field(default_factory=dict)
     status: MatchStatus = MatchStatus.WAITING
     start_time: float | None = None # set when countdown ends
