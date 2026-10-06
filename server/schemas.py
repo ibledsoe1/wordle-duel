@@ -9,7 +9,7 @@ from game_engine.models import MatchStatus
 
 PlayerName = Annotated[
     str,
-    StringConstraints(strip_whitespace=True, min_length= 1)
+    StringConstraints(strip_whitespace=True, min_length=1, max_length=20)
 ]
 
 DurationSeconds = Literal[60, 120, 180, 240, 300]
@@ -34,10 +34,10 @@ class CreateMatchRequest(BaseModel):
         examples=[180],
     )
     word_count: int | None = Field(
-        default=None,
+        default=10,
         gt=0,
         le=MAX_WORD_COUNT,
-        description="Number of words in the match. Omit to use server default.",
+        description="Number of words in the match. Omit to use server default (10).",
         examples=[5],
     )
 

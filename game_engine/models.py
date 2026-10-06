@@ -34,6 +34,7 @@ class PlayerState:
     """One player's progress through a match's word sequence."""
 
     player_id: str
+    name: str
     current_word_index: int = 0
     current_word_guesses: list[list[LetterStatus]] = field(default_factory=list)
     finished_puzzles: list[FinishedPuzzleResult] = field(default_factory=list)
