@@ -70,6 +70,6 @@ class Match:
     # Server owns and mutates this, game_engine just defines the shape
 
     config: MatchConfig
-    players: list[str, PlayerState] = field(default_factory=dict)
+    players: dict[str, PlayerState] = field(default_factory=dict)
     status: MatchStatus = MatchStatus.WAITING
     start_time: float | None = None # set when countdown ends

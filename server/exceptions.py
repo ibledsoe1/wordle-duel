@@ -3,7 +3,7 @@ class AppError(Exception):
 
     status_code: int = 500
     error_name = "app_error"
-    message: str = "An unexpected error occured."
+    message: str = "An unexpected error occurred."
 
     def __init__(self) -> None:
         super().__init__(self.message)

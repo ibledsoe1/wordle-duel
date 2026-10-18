@@ -1,10 +1,13 @@
+# schemas: defined shapes for data to follow, constraints
+# these are for request and response data for creating and joining matches,
+# creating players, returning match state, and error responses
 from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 from game_engine.models import MatchStatus
 
-# NOTE: Ask Claude -> Why are playername and duration seconds in this schemas file?
+# NOTE: Ask -> Why are playername and duration seconds in this schemas file?
 # shouldn't they be in models.py?
 
 PlayerName = Annotated[
@@ -27,14 +30,13 @@ class CreateMatchRequest(BaseModel):
         description="Display name for the creator (1 to 20 characters).",
         examples=["Izzy"],
     )
-    duration_seconds: int | None = Field(
+    duration_seconds: DurationSeconds | None = Field(
         default=None, # None means use the server's default (from MatchConfig)
-        gt=0,
         description="Match length in seconds: 60, 120, 180, 240, 300",
         examples=[180],
     )
     word_count: int | None = Field(
-        default=10,
+        default=None, 
         gt=0,
         le=MAX_WORD_COUNT,
         description="Number of words in the match. Omit to use server default (10).",
