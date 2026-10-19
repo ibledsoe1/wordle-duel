@@ -43,8 +43,3 @@ def score_guess(guess: str, answer: str) -> list[LetterStatus]:
 
 def is_solved(statuses: list[LetterStatus]) -> bool:
     return all(status == LetterStatus.CORRECT for status in statuses)
-
-# return number of correct tiles in a guess
-# If there is a tie at the end of the game, total correct tiles breaks the tie
-def count_correct_tiles(statuses: list[LetterStatus]) -> bool:
-    return sum(1 for status in statuses if status == LetterStatus.CORRECT)

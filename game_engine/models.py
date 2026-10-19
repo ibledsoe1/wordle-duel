@@ -14,7 +14,7 @@ from .scoring import LetterStatus
 @dataclass
 class MatchConfig:
     """The fixed rules for a single match."""
-    match_id: str # NOTE: should this be an int?
+    match_id: str 
     word_sequence: list[str]
     guess_limit: int = 6
     duration_seconds: int = 180
@@ -27,7 +27,6 @@ class FinishedPuzzleResult:
     answer_word: str
     solved: bool
     guesses_used: int
-    green_tiles: int
 
 @dataclass
 class PlayerState:
@@ -42,10 +41,6 @@ class PlayerState:
     @property
     def solved_count(self) -> int:
         return sum(1 for puzzle in self.finished_puzzles if puzzle.solved)
-
-    @property
-    def total_green_tiles(self) -> int:
-        return sum(puzzle.green_tiles for puzzle in self.finished_puzzles)
 
     @property
     def latest_guess_statuses(self) -> list[LetterStatus] | None:
