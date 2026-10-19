@@ -54,19 +54,8 @@ class JoinMatchRequest(BaseModel):
         examples=["Izzy"],
     )
 
-
-class CreateMatchResponse(BaseModel):
-    """Describe the result of creating a match"""
-
-    model_config = ConfigDict(frozen=True)
-
-    match_id: str = Field(description="Server-generated match identifier.")
-    player_id: str = Field(description="Server-generated match specific player identifier")
-    status: MatchStatus = Field(description="Current match status.")
-
-# NOTE: Ask if CreateMatchResponse and PlayerResponse are redundant
-# could I just use player response for both? or combine them into one with a new name?
-
+# NOTE: merged with CreateMatchResponse because it was redundant,
+# I don't really see them doing different things in the long run so I merged them
 class PlayerResponse(BaseModel):
     """Describe a newly added player to a match"""
 
