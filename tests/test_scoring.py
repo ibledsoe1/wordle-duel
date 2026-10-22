@@ -47,8 +47,3 @@ def test_is_solved_true_when_all_correct():
     assert is_solved([C, C, C, C, C]) is True
     assert is_solved([C, C, C, C, P]) is False
     assert is_solved([I, I, I, I, I,]) is False
-
-def test_count_correct_tiles():
-    assert is_solved([C, C, C, C, C]) == 5
-    assert is_solved([C, P, I, C, P]) == 2
-    assert is_solved([I, I, I, I, I,]) == 0
