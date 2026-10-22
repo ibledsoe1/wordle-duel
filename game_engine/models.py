@@ -36,6 +36,10 @@ class PlayerState:
     finished_puzzles: list[FinishedPuzzleResult] = field(default_factory=list)
 
     @property
+    def puzzle_number(self) -> int:
+        return len(self.finished_puzzles)
+
+    @property
     def solved_count(self) -> int:
         return sum(1 for puzzle in self.finished_puzzles if puzzle.solved)
 
