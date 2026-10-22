@@ -23,8 +23,6 @@ class MatchConfig:
 class FinishedPuzzleResult:
     """A record of one finished wordle puzzle results,
     (either solved or given up on after using all guesses)."""
-    word_index: int
-    answer_word: str
     solved: bool
     guesses_used: int
 
@@ -34,7 +32,6 @@ class PlayerState:
 
     player_id: str
     name: str
-    current_word_index: int = 0
     current_word_guesses: list[list[LetterStatus]] = field(default_factory=list)
     finished_puzzles: list[FinishedPuzzleResult] = field(default_factory=list)
 
