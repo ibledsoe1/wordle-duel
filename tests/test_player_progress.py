@@ -46,3 +46,13 @@ def test_puzzle_results_recorded_when_solved():
     update_player_progress(player, "crane", config)
     assert player.finished_puzzles == [FinishedPuzzleResult(solved=True, guesses_used=2)]
     assert player.solved_count == 1
+
+# NOTE: Add test_puzzle_results_recorded_when_puzzle_ended 
+
+# Cycle 5:
+def test_puzzle_finished_clears_current_word_guesses():
+    player = make_player()
+    config = make_config()
+    update_player_progress(player, "wrong", config)
+    update_player_progress(player, "crane", config)
+    assert player.current_word_guesses == []
