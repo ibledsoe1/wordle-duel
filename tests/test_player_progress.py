@@ -1,6 +1,8 @@
+import pytest
 from game_engine.models import PlayerState, MatchConfig, FinishedPuzzleResult
 from game_engine.player_progress import GuessResult, update_player_progress
 from game_engine.scoring import LetterStatus
+from game_engine.exceptions import PlayerFinishedAllPuzzlesError
  
 C, P, I = LetterStatus.CORRECT, LetterStatus.PRESENT, LetterStatus.INCORRECT
 
@@ -56,3 +58,21 @@ def test_puzzle_finished_clears_current_word_guesses():
     update_player_progress(player, "wrong", config)
     update_player_progress(player, "crane", config)
     assert player.current_word_guesses == []
+
+# Not part of a cycle
+def test_puzzle_finished_advances_to_next_puzzle():
+    player = make_player()
+    config = make_config()
+    update_player_progress(player, "crane", config)
+    assert player.puzzle_number == 1
+    
+    update_player_progress(player, "slate", config)
+    assert player.puzzle_number == 2
+
+# Cycle 6
+def test_finished_player_can_not_guess():
+    player = make_player()
+    config = make_config(words=("crane",))
+    update_player_progress(player, "crane", config)
+    with pytest.raises(PlayerFinishedAllPuzzlesError):
+        update_player_progress(player, "crane", config)
