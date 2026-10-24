@@ -1,7 +1,7 @@
 # Cycle 1:
 from dataclasses import dataclass
 from game_engine.scoring import LetterStatus, score_guess, is_solved
-from game_engine.models import PlayerState, MatchConfig
+from game_engine.models import PlayerState, MatchConfig, FinishedPuzzleResult
 
 @dataclass
 class GuessResult:
@@ -18,5 +18,8 @@ def update_player_progress(player: PlayerState, guess: str, config: MatchConfig)
     solved = is_solved(colors)
     guesses_used = len(player.current_word_guesses)
     puzzle_ended = solved or guesses_used >= config.guess_limit
+
+    if puzzle_ended:
+        player.finished_puzzles.append(FinishedPuzzleResult(solved=solved, guesses_used=guesses_used))
 
     return GuessResult(colors=colors, puzzle_ended=puzzle_ended, solved=solved)
