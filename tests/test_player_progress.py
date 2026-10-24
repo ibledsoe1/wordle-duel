@@ -21,3 +21,8 @@ def test_correct_guess_updates_correctly():
 def test_incorrect_guess_updates_correctly():
     result = update_player_progress(make_player(), guess="wrong", config=make_config())
     assert result == GuessResult(colors=[I, C, I, C, I], puzzle_ended=False, solved=False)
+
+# Cycle 3:
+def test_incorrect_final_guess_updates_correctly():
+    result = update_player_progress(make_player(), guess="wrong", config=make_config())
+    assert result == GuessResult(colors=[I, C, I, C, I], puzzle_ended=True, solved=False)
