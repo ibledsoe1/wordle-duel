@@ -33,7 +33,16 @@ def test_incorrect_guess_updates_correctly():
 # Cycle 3:
 def test_incorrect_final_guess_updates_correctly():
     player = make_player()
-    result = fail_puzzle(player, make_config, 6)
+    result = fail_puzzle(player, make_config(), 6)
     assert result.puzzle_ended is True
     assert result.solved is False
     assert result.colors == [I, C, I, C, I]
+
+# Cycle 4: 
+def test_puzzle_results_recorded_when_solved():
+    player = make_player()
+    config = make_config()
+    update_player_progress(player, "wrong", config)
+    update_player_progress(player, "crane", config)
+    assert player.finished_puzzles == [FinishedPuzzleResult(solved=True, guesses_used=2)]
+    assert player.solved_count == 1
