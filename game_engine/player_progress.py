@@ -12,9 +12,11 @@ class GuessResult:
 
 def update_player_progress(player: PlayerState, guess: str, config: MatchConfig) -> GuessResult:
     answer = config.word_sequence[player.puzzle_number]
-
     colors = score_guess(guess, answer)
+    player.current_word_guesses.append(colors)
+
     solved = is_solved(colors)
-    puzzle_ended = solved
+    guesses_used = len(player.current_word_guesses)
+    puzzle_ended = solved or guesses_used >= config.guess_limit
 
     return GuessResult(colors=colors, puzzle_ended=puzzle_ended, solved=solved)
