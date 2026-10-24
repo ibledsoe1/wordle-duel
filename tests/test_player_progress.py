@@ -14,5 +14,5 @@ def make_config(words=("crane", "slate"), guess_limit=6) -> MatchConfig:
 
 
 def test_correct_guess_updates_correctly():
-    result = update_player_progress()
-    assert result == GuessResult(colors=[C, C, P, I, I], puzzle_ended=False, solved=False)
+    result = update_player_progress(make_player(), guess="crane", config=make_config())
+    assert result == GuessResult(colors=[C, C, C, C, C], puzzle_ended=True, solved=True)
