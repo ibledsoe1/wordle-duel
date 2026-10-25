@@ -22,17 +22,17 @@ def fail_puzzle(player, config, tries):
     return result
 
 
-# HW5 Cycle 1:
+
 def test_correct_guess_updates_correctly():
     result = update_player_progress(make_player(), guess="crane", config=make_config())
     assert result == GuessResult(colors=[C, C, C, C, C], puzzle_ended=True, solved=True)
 
-# Cycle 2:
+
 def test_incorrect_guess_updates_correctly():
     result = update_player_progress(make_player(), guess="wrong", config=make_config())
     assert result == GuessResult(colors=[I, C, I, C, I], puzzle_ended=False, solved=False)
 
-# Cycle 3:
+
 def test_incorrect_final_guess_updates_correctly():
     player = make_player()
     result = fail_puzzle(player, make_config(), 6)
@@ -40,7 +40,7 @@ def test_incorrect_final_guess_updates_correctly():
     assert result.solved is False
     assert result.colors == [I, C, I, C, I]
 
-# Cycle 4: 
+
 def test_puzzle_results_recorded_when_solved():
     player = make_player()
     config = make_config()
@@ -49,9 +49,14 @@ def test_puzzle_results_recorded_when_solved():
     assert player.finished_puzzles == [FinishedPuzzleResult(solved=True, guesses_used=2)]
     assert player.solved_count == 1
 
-# NOTE: Add test_puzzle_results_recorded_when_puzzle_ended 
 
-# Cycle 5:
+def test_puzzle_results_recorded_when_puzzle_ended_unsolved():
+    player = make_player()
+    result = fail_puzzle(player, make_config(), 6)
+    assert player.finished_puzzles == [FinishedPuzzleResult(solved=False, guesses_used=6)]
+    assert player.solved_count == 0
+
+
 def test_puzzle_finished_clears_current_word_guesses():
     player = make_player()
     config = make_config()
@@ -59,7 +64,7 @@ def test_puzzle_finished_clears_current_word_guesses():
     update_player_progress(player, "crane", config)
     assert player.current_word_guesses == []
 
-# Not part of a cycle
+
 def test_puzzle_finished_advances_to_next_puzzle():
     player = make_player()
     config = make_config()
@@ -69,7 +74,7 @@ def test_puzzle_finished_advances_to_next_puzzle():
     update_player_progress(player, "slate", config)
     assert player.puzzle_number == 2
 
-# Cycle 6
+
 def test_finished_player_can_not_guess():
     player = make_player()
     config = make_config(words=("crane",))
