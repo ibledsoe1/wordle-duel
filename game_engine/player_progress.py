@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from game_engine.scoring import LetterStatus, score_guess, is_solved
 from game_engine.models import PlayerState, MatchConfig, FinishedPuzzleResult
+from game_engine.exceptions import PlayerFinishedAllPuzzlesError
 
 @dataclass
 class GuessResult:
@@ -10,6 +11,11 @@ class GuessResult:
 
 
 def update_player_progress(player: PlayerState, guess: str, config: MatchConfig) -> GuessResult:
+    if player.puzzle_number >= len(config.word_sequence):
+        raise PlayerFinishedAllPuzzlesError(
+            f"Player {player.player_id} has already finished every puzzle."
+        )
+    
     answer = config.word_sequence[player.puzzle_number]
     colors = score_guess(guess, answer)
     player.current_word_guesses.append(colors)
