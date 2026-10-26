@@ -31,4 +31,9 @@ class MatchFinishedError(AppError):
     status_code = 409
     error_name = "match_finished"
     message = "This match has been finished."
-    
+
+# HW6
+class PlayerNotAuthenticatedError(AppError):
+    status_code = 401
+    error_name = "player_not_authenticated"
+    message = "Could nto authenticate the request's player."

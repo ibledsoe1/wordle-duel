@@ -1,4 +1,6 @@
 import itertools
+import copy
+import secrets
 
 import pytest
 
@@ -9,6 +11,7 @@ from server.exceptions import (
     MatchFinishedError,
     MatchFullError,
     MatchNotFoundError,
+    PlayerNotAuthenticatedError
 )
 from server.match_manager import (
     CODE_ALPHABET,
@@ -309,3 +312,46 @@ def test_each_error_carries_its_http_contract(error, status_code, error_name):
     assert exc.error_name == error_name
     assert exc.message
     assert str(exc) == exc.message
+
+# HW6 functional
+def test_authenticate_player_returns_correct_token_owner(manager):
+    created = create(manager, name="Izzy")
+    joined = join(manager, created.match_id, name="Sam")
+    match = manager.get_match(created.match_id)
+
+    result = manager.authenticate_player(match, joined.player_id)
+
+    assert result.player_id == joined.player_id
+    assert result.name == "Sam"
+    assert result is match.players[joined.player_id]
+
+
+# HW6 non-functional
+# Security/input validation check: for 3 invalid tokens (None, random ID, ID belonging to
+# a different match), 100% of them must raise PlayerNotAuthenticatedError, and the match's
+# players must not change state
+@pytest.mark.parametrize(
+    "make_token",
+    [
+        pytest.param(lambda other_match_player_id: None, id="missing token"),
+        pytest.param(
+            lambda other_match_player_id: secrets.token_urlsafe(),
+            id="unknown token",
+        ),
+        pytest.param(
+            lambda other_match_player_id: other_match_player_id,
+            id="token from another match"
+        )
+    ],
+)
+def test_authenticate_player_rejects_invalid_tokens_without_changing_state(manager, make_token):
+    first = create(manager, name="Izzy")
+    join(manager, first.match_id, name="Sam")
+    second = create(manager, name="Alex")
+    match = manager.get_match(first.match_id)
+    snapshot = copy.deepcopy(match.players)
+
+    with pytest.raises(PlayerNotAuthenticatedError):
+        manager.authenticate_player(match, make_token(second.player_id))
+
+    assert match.players == snapshot

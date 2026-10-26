@@ -12,13 +12,13 @@ from .exceptions import (
     MatchFinishedError,
     MatchFullError,
     MatchNotFoundError,
+    PlayerNotAuthenticatedError,
 )
 
 CODE_LENGTH = 6
 CODE_ALPHABET = string.ascii_uppercase + string.digits
 
 DEFAULT_WORD_COUNT = 10
-
 MAX_PLAYERS = 2
 
 
@@ -101,6 +101,14 @@ class MatchManager:
         if match is None:
             raise MatchNotFoundError()
         return match
+
+
+    # HW6
+    def authenticate_player(self, match: Match, token: str | None) -> PlayerState:
+        player = match.players.get(token)
+        if player is None:
+            raise PlayerNotAuthenticatedError()
+        return player
 
 
     def add_player(self, match: Match, name: str) -> PlayerState:
