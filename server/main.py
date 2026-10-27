@@ -5,6 +5,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from server.routes import router as matches_router
+
 tags_metadata = [
     {
         "name":"General",
@@ -18,6 +20,9 @@ app = FastAPI(
     version="0.1.0",
     openapi_tags=tags_metadata,
 )
+
+app.include_router(matches_router)
+
 
 @app.get("/", tags=["General"], summary="API landing point/introduction")
 def read_root() -> dict[str, str]:
