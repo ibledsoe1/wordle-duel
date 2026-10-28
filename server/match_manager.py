@@ -43,7 +43,7 @@ class MatchManager:
         self._matches: dict[str, Match] = {}
         # Passing a word list in keeps tests small and avoids reading the
         # file on every create.
-        self.answer_words = (
+        self._answer_words = (
             answer_words if answer_words is not None else load_answer_words()
         )
         self._valid_guesses = (
