@@ -27,12 +27,31 @@ class MatchAlreadyStartedError(AppError):
     message = "This match has already started."
 
 
+class PlayerNotAuthenticatedError(AppError):
+    status_code = 401
+    error_name = "player_not_authenticated"
+    message = "Could not authenticate the request's player."
+    headers = {"WWW-Authenticate": "Bearer"}
+
+
+class MatchNotActiveError(AppError):
+    status_code = 409
+    error_name = "match_not_active"
+    message = "This match is not active."
+ 
+ 
+class NotInWordListError(AppError):
+    status_code = 400
+    error_name = "not_in_word_list"
+    message = "The word is not in the word list."
+
+
 class MatchFinishedError(AppError):
     status_code = 409
     error_name = "match_finished"
     message = "This match has been finished."
 
-# HW6
+
 class PlayerNotAuthenticatedError(AppError):
     status_code = 401
     error_name = "player_not_authenticated"

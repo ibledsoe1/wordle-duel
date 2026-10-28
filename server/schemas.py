@@ -6,9 +6,8 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints
 
 from game_engine.models import MatchStatus
-
-# NOTE: Ask -> Why are playername and duration seconds in this schemas file?
-# shouldn't they be in models.py?
+from game_engine.scoring import LetterStatus
+from game_engine.word_list import WORD_LENGTH
 
 PlayerName = Annotated[
     str,
@@ -54,6 +53,27 @@ class JoinMatchRequest(BaseModel):
         examples=["Izzy"],
     )
 
+class GuessRequest(BaseModel): 
+    """Validate the word a player submits as a guess."""
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True, frozen=True)
+
+    guess: str = Field(
+        min_length=1,
+        max_length=WORD_LENGTH,
+        description="The guessed word.",
+        examples=["CRANE"],
+    )
+
+class GuessResponse(BaseModel):
+    """Describe the scored result of a guess"""
+ 
+    model_config = ConfigDict(frozen=True)
+ 
+    colors: list[LetterStatus] = Field(description="One color per letter of the guess.")
+    puzzle_ended: bool = Field(description="True if this guess finished the word.")
+    solved: bool = Field(description="True if the word was guessed correctly.")
+
+
 # NOTE: merged with CreateMatchResponse because it was redundant,
 # I don't really see them doing different things in the long run so I merged them
 class PlayerResponse(BaseModel):
@@ -91,8 +111,7 @@ class ErrorResponse(BaseModel):
         description="Name describing the specific error.",
         examples=["match_full"],
     )
-    # NOTE: Ask what 'safe to branch on' and 'may be reworded; do not branch on it' mean
-    # from descriptions that claude generated
+
     message: str = Field(
         description="Human readable explanation.",
         examples=["This match is already full."]

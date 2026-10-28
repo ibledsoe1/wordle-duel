@@ -4,15 +4,18 @@ import string
 from dataclasses import dataclass
 
 from game_engine.models import Match, MatchConfig, MatchStatus, PlayerState
-from game_engine.word_list import load_answer_words
+from game_engine.word_list import load_answer_words, load_valid_guesses, is_valid_guess
 from server.schemas import CreateMatchRequest, JoinMatchRequest
+from game_engine.player_progress import GuessResult, update_player_progress
 
 from .exceptions import (
     MatchAlreadyStartedError,
     MatchFinishedError,
     MatchFullError,
     MatchNotFoundError,
+    MatchNotActiveError,
     PlayerNotAuthenticatedError,
+    NotInWordListError,
 )
 
 CODE_LENGTH = 6
@@ -32,12 +35,19 @@ class JoinResult:
 
 
 class MatchManager:
-    def __init__(self, answer_words: list[str] | None = None) -> None:
+    def __init__(
+            self, 
+            answer_words: list[str] | None = None,
+            valid_guesses: set[str] | None = None,
+) -> None:
         self._matches: dict[str, Match] = {}
         # Passing a word list in keeps tests small and avoids reading the
         # file on every create.
-        self._answer_words = (
+        self.answer_words = (
             answer_words if answer_words is not None else load_answer_words()
+        )
+        self._valid_guesses = (
+            valid_guesses if valid_guesses is not None else load_valid_guesses()
         )
         # SystemRandom draws from the OS, so a player cannot predict the
         # words from earlier output the way they could with a seeded RNG.
@@ -103,12 +113,28 @@ class MatchManager:
         return match
 
 
-    # HW6
     def authenticate_player(self, match: Match, token: str | None) -> PlayerState:
         player = match.players.get(token)
         if player is None:
             raise PlayerNotAuthenticatedError()
         return player
+
+
+    def authorize_guess(self, code: str, token: str | None) -> tuple[PlayerState, MatchConfig]:
+        # Verify that everything is in order before a player guesses
+        match = self.get_match(code)
+        if match.status != MatchStatus.ACTIVE:
+            raise MatchNotActiveError()
+        player = self.authenticate_player(match, token)
+        return player, match.config
+
+
+    def submit_guess(self, code: str, token: str | None, guess: str) -> GuessResult:
+        # Authorize player, validate the word, then score the guess
+        player, config = self.authorize_guess(code, token)
+        if not is_valid_guess(guess, self._valid_guesses):
+            raise NotInWordListError()
+        return update_player_progress(player, guess.strip().upper(), config)
 
 
     def add_player(self, match: Match, name: str) -> PlayerState:
