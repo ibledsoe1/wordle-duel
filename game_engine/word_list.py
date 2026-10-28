@@ -6,7 +6,7 @@ WORD_LENGTH = 5
 
 _DATA_DIR = Path(__file__).parent / "word_lists"
 DEFAULT_ANSWERS_PATH = _DATA_DIR / "answer_words.txt"
-DEFAULT_GUESSES_PATH = _DATA_DIR / "valid guesses.txt"
+DEFAULT_GUESSES_PATH = _DATA_DIR / "valid_guesses.txt"
 
 def read_words(path: Path) -> list[str]:
     if not path.exists():
