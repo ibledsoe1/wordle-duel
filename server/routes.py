@@ -77,7 +77,8 @@ def get_match_state(
         status=match.status,
         player_count=len(match.players),
         player_names=[player.name for player in match.players.values()],
-        guess_limit=match.config.duration_seconds,
+        guess_limit=match.config.guess_limit,
+        duration_seconds=match.config.duration_seconds,
     )
 
 
