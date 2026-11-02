@@ -4,7 +4,7 @@
 
 # Not sure if later these will have to be separate files?
 # Or maybe this will have to be it's own folder? 
-# NOTE: I need to research more about project structure
+
 
 from dataclasses import dataclass, field
 from enum import Enum

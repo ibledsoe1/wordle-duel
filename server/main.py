@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from server.error_handlers import register_error_handlers
 from server.routes import router as matches_router
 
 tags_metadata = [
@@ -21,6 +22,7 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
+register_error_handlers(app)
 app.include_router(matches_router)
 
 
