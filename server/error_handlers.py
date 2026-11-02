@@ -22,4 +22,7 @@ def app_error_handler(request: Request, exc: AppError) -> JSONResponse:
     """Convert any AppError into a response."""
     return _error_response(exc)
 
+def register_error_handlers(app: FastAPI) -> None:
+    app.add_exception_handler(AppError, app_error_handler)
+
 # TODO: add PlayerFinishedAllPuzzles handler, but need to look into separation reasoning more
