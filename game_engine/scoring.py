@@ -1,6 +1,7 @@
 from collections import Counter
 from enum import Enum
 
+# NOTE: Think about if word_length and/or LetterStatus should be in their own files
 WORD_LENGTH = 5
 
 class LetterStatus(str, Enum):
