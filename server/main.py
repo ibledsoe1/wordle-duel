@@ -7,6 +7,7 @@ from fastapi import FastAPI
 
 from server.error_handlers import register_error_handlers
 from server.routes import router as matches_router
+from server.ws_routes import router as ws_router
 
 tags_metadata = [
     {
@@ -24,6 +25,7 @@ app = FastAPI(
 
 register_error_handlers(app)
 app.include_router(matches_router)
+app.include_router(ws_router)
 
 
 @app.get("/", tags=["General"], summary="API landing point/introduction")
