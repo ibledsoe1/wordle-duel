@@ -113,6 +113,14 @@ class MatchManager:
         return match
 
 
+    def start_match(self, code: str) -> None:
+        self.get_match(code).status = MatchStatus.ACTIVE
+
+
+    def finish_match(self, code: str) -> None:
+        self.get_match(code).status = MatchStatus.FINISHED
+
+
     def authenticate_player(self, match: Match, token: str | None) -> PlayerState:
         player = match.players.get(token)
         if player is None:

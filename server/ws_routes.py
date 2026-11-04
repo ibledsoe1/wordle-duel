@@ -3,9 +3,10 @@
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
 
 from server.connection_manager import ConnectionManager
-from server.dependencies import get_connection_manager, get_match_manager
+from server.dependencies import get_connection_manager, get_match_manager, get_match_runner
 from server.exceptions import AppError
-from server.match_manager import MatchManager
+from server.match_manager import MatchManager, MAX_PLAYERS
+from server.match_runner import MatchRunner
 
 router = APIRouter(tags=["WebSocket"])
 
@@ -24,6 +25,7 @@ async def match_socket(
     match_id: str,
     manager: MatchManager = Depends(get_match_manager),
     connections: ConnectionManager = Depends(get_connection_manager),
+    runner: MatchRunner = Depends(get_match_runner)
 ) -> None:
     """Hold a player's connection open for the lifespan of the match."""
 
@@ -38,7 +40,8 @@ async def match_socket(
     await connections.connect(code, player.player_id, websocket)
 
     try:
-        # TODO: countdown task to start match
+        if connections.connected_count(code) == MAX_PLAYERS:
+            runner.start(code)
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
