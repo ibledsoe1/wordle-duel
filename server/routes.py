@@ -15,6 +15,10 @@ from server.schemas import (
     GuessResponse,
     ErrorResponse,
 )
+from server.connection_manager import ConnectionManager
+from server.dependencies import get_connection_manager, get_match_manager
+from server.ws_messages import OpponentUpdateMessage
+from game_engine.player_progress import GuessResult
 
 router = APIRouter(prefix="/matches", tags=["Matches"])
 
@@ -88,11 +92,26 @@ def get_match_state(
     summary="Submit a guess",
     description="Score a submitted guess for the authenticated player."
 )
-def submit_guess(
+async def submit_guess(
     match_id: str, 
     data: GuessRequest,
     token: str | None = Depends(get_match_manager),
     manager: MatchManager = Depends(get_match_manager),
+    connections: ConnectionManager = Depends(get_connection_manager),
 ) -> GuessResponse:
-    """Pass match ID, bearer token, and guess to manager."""
-    return manager.submit_guess(match_id, token, data.guess)
+    """Score the guess, then update the progress to send to the opponent."""
+    
+    # Pass match ID, bearer token, and guess to manager.
+    result = manager.submit_guess(match_id, token, data.guess)
+
+    match = manager.get_match(match_id)
+    player = manager.authenticate_player(match, token)
+    await connections.send_to_others(
+        match.config.match_id,
+        player.player_id,
+        OpponentUpdateMessage(
+            colors=result.colors,
+            solved_count=player.solved_count,
+        ),
+    )
+    return result
