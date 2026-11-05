@@ -6,7 +6,7 @@ from server.match_runner import MatchRunner
 
 match_manager = MatchManager()
 connection_manager = ConnectionManager()
-match_runner = MatchRunner()
+match_runner = MatchRunner(match_manager, connection_manager)
 
 def get_match_manager() -> MatchManager:
     return match_manager
