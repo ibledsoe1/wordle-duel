@@ -11,7 +11,7 @@ class Button():
         self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 
 
-    def update(self, screen):
+    def draw(self, screen):
         screen.blit(self.text, self.text_rect)
 
     def check_for_input(self, position):
