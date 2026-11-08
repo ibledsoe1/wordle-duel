@@ -1,4 +1,4 @@
 import os
 
-def lobby_ui_enabled() -> bool:
-    return os.getenv("lobby_ui", "0") == "1"
+def home_ui_enabled() -> bool:
+    return os.getenv("home_ui", "0") == "1"

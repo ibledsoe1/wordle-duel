@@ -1,16 +1,16 @@
 """PyGame entry point."""
 import pygame
 
-from client.config import lobby_ui_enabled
+from client.config import home_ui_enabled
 
 def main() -> None:
     pygame.init()
 
-    screen = pygame.display.set_mode((600, 600))
+    screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 
-    if lobby_ui_enabled():
-        from client.screens.lobby import draw_lobby
-        draw_screen = draw_lobby
+    if home_ui_enabled():
+        from client.screens.home import draw_home
+        draw_screen = draw_home
 
     running = True
     while running:
