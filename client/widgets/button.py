@@ -1,26 +1,26 @@
 """Reusable button template."""
+import pygame
 
 class Button():
-    def __init__(self, pos, text_input, font, base_color, hovering_color):
-        self.x_pos = pos[0]
-        self.y_pos = pos[1]
+    # NOTE: Do I need a builder pattern for this?? Idk yet it might be overkill
+    def __init__(self, pos, text_input, font, base_color, hovering_color, padding, border_width):
         self.font = font
         self.base_color, self.hovering_color = base_color, hovering_color
+        self.padding = padding
+        self.border_width = border_width
         self.text_input = text_input
         self.text = self.font.render(self.text_input, True, self.base_color)
-        self.rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+        
+        self.rect = self.text.get_rect().inflate(padding[0] * 2, padding[1] * 2)
+        self.rect.center = pos
 
 
     def draw(self, screen):
-        screen.blit(self.text, self.text_rect)
+        screen.blit(self.text, self.rect)
 
     def check_for_input(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            return True
-        return False
+        return self.rect.collidepoint(position)
 
     def change_color(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.text = self.font.render(self.text_input, True, self.hovering_color)
-        else:
-            self.text = self.font.render(self.text_input, True, self.base_color)
+        color = self.hovering_color if self.check_for_input(position) else self.base_color
+        self.text = self.font.render(self.text_input, True, color)
