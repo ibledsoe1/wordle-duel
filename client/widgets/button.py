@@ -16,7 +16,8 @@ class Button():
 
 
     def draw(self, screen):
-        screen.blit(self.text, self.rect)
+        pygame.draw.rect(screen, self.base_color, self.rect, width=self.border_width, border_radius=8)
+        screen.blit(self.text, self.text.get_rect(center=self.rect.center))
 
     def check_for_input(self, position):
         return self.rect.collidepoint(position)
