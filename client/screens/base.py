@@ -4,9 +4,10 @@ import pygame
 
 class Screen(ABC):
     """Screen base, subclasses must implement draw"""
-    def __init__(self, screen: pygame.Surface, font: pygame.font.Font):
-        self.screen = screen
-        self.font = font
+    def __init__(self, app):
+        self.app = app
+        self.screen = app.screen
+        self.font = app.fonts
 
 
     @abstractmethod
@@ -14,5 +15,9 @@ class Screen(ABC):
         """Draw this screen onto self.screen."""
 
 
+    def update(self) -> None:
+        """Changes state w/o user action, for example the timer counting down."""
+
+
     def handle_input(self, event: pygame.event.Event) -> None:
-        """React to a pygame input event."""
+        """ Changes state w/ user action, a reaction to a pygame input event."""
