@@ -1,33 +1,31 @@
 """PyGame entry point."""
 import pygame
-from client.widgets.button import Button
 
+from client.app import App
 from client.config import *
+from client.fonts import load_fonts
+from client.screens import HomeScreen
 
+# NOTE: created separate app file,
+# Main shouldn't be doing much besides starting things
+# App class owns game loop, current screen, and maybe shared session data
+# Screens will never touch the loop, they'll ask the app to switch
 def main() -> None:
+    if not home_ui_enabled():
+        return
+    
     pygame.init()
 
     desktop_w, desktop_h = pygame.display.get_desktop_sizes()[0]
     width, height = int(desktop_w * WINDOW_SCALE), int(desktop_h * WINDOW_SCALE)
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption(WINDOW_TITLE)
-    screen.fill(BACKGROUND_COLOR)
-    # TODO: add a different font w/ larger size for the header, find official wordle fonts
-    font = pygame.font.Font(None, height // 15)
 
-    if home_ui_enabled():
-        from client.screens.home import HomeScreen
-        current_screen = HomeScreen(screen, font)
+    # NOTE: add another flag for other screens if needed for next assignment?
 
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        if current_screen is not None:
-            current_screen.draw()
-        pygame.display.flip()
+    app = App(screen, load_fonts(height))
+    app.switch_screen(HomeScreen)
+    app.run()
 
     pygame.quit()
 
