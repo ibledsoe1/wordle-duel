@@ -4,12 +4,13 @@ from client.screens.base import Screen
 from client.widgets.button import Button
 
 TEXT_COLOR = (240, 240, 240)
-HOVER_COLOR = (200, 200, 200)
+HOVER_COLOR = (180, 180, 180)
 
 class HomeScreen(Screen):
-    def __init__(self, screen: pygame.Surface, font: pygame.font.Font):
-        super().__init__(screen, font)
-        width, height = screen.get_size()
+    def __init__(self, app):
+        super().__init__(app)
+        width, height = self.screen.get_size()
+        font = self.fonts.body
         self.center_x = width // 2
         self.heading_y = int(height * 0.2)
         self.create_button = Button(
@@ -39,7 +40,7 @@ class HomeScreen(Screen):
         # TODO: add actions on create and join
         
     def draw(self) -> None:
-        heading = self.font.render("Wordle Duel", True, TEXT_COLOR)
+        heading = self.fonts.heading.render("Wordle Duel", True, TEXT_COLOR)
         self.screen.blit(heading, heading.get_rect(center=(self.center_x, self.heading_y)))
 
         mouse_pos = pygame.mouse.get_pos()

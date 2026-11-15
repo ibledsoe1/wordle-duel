@@ -7,7 +7,7 @@ class Screen(ABC):
     def __init__(self, app):
         self.app = app
         self.screen = app.screen
-        self.font = app.fonts
+        self.fonts = app.fonts
 
 
     @abstractmethod

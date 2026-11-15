@@ -4,7 +4,7 @@ import pygame
 from client.app import App
 from client.config import *
 from client.fonts import load_fonts
-from client.screens import HomeScreen
+from client.screens.home import HomeScreen
 
 # NOTE: created separate app file,
 # Main shouldn't be doing much besides starting things

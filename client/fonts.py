@@ -18,6 +18,6 @@ class Fonts:
 def load_fonts(height: int) -> Fonts:
     """Call after pygame.init()"""
     return Fonts(
-        heading=pygame.font.Font(HEADER_FONT_PATH, height // 12),
-        body=pygame.font.Font(BODY_FONT_PATH, height // 15)
+        heading=pygame.font.Font(HEADER_FONT_PATH, height // 8),
+        body=pygame.font.Font(BODY_FONT_PATH, height // 16)
     )
