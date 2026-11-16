@@ -2,9 +2,7 @@ import pygame
 
 from client.screens.base import Screen
 from client.widgets.button import Button
-
-TEXT_COLOR = (240, 240, 240)
-HOVER_COLOR = (180, 180, 180)
+from client.config import TEXT_COLOR, HOVER_COLOR
 
 class HomeScreen(Screen):
     def __init__(self, app):
@@ -37,8 +35,13 @@ class HomeScreen(Screen):
     def handle_input(self, event: pygame.event.Event) -> None:
         if event.type != pygame.MOUSEBUTTONDOWN or event.button != 1:
             return
-        # TODO: add actions on create and join
-        
+        if self.create_button.check_for_input(event.pos):
+            from client.screens.create_match import CreateMatchScreen
+            self.app.switch_screen(CreateMatchScreen)
+        if self.join_button.check_for_input(event.pos):
+            from client.screens.join_match import JoinMatchScreen
+            self.app.switch_screen(JoinMatchScreen)
+
     def draw(self) -> None:
         heading = self.fonts.heading.render("Wordle Duel", True, TEXT_COLOR)
         self.screen.blit(heading, heading.get_rect(center=(self.center_x, self.heading_y)))

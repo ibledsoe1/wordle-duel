@@ -22,7 +22,8 @@ class App:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.quit()
-                # NOTE: add event handler here
+                else:
+                    self.current_screen.handle_input(event)
             self.current_screen.update()
             self.screen.fill(BACKGROUND_COLOR)
             self.current_screen.draw()

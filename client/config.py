@@ -6,6 +6,8 @@ WINDOW_TITLE = "Wordle Duel"
 # Window size is this fraction of the user's screen
 WINDOW_SCALE = 0.8
 BACKGROUND_COLOR = (30, 30, 30)
+TEXT_COLOR = (240, 240, 240)
+HOVER_COLOR = (180, 180, 180)
 HEADER_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "ZillaSlab-Medium.ttf"
 BODY_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "LibreFranklin-VariableFont_wght.ttf"
 
