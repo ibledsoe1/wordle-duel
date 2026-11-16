@@ -22,7 +22,7 @@ def home_ui_enabled() -> bool:
     return os.getenv("home_ui", "0") == "0"
 
 def create_match_ui_enabled() -> bool:
-    return os.getenv("create_match_ui", "0") == "0"
+    return os.getenv("create_match_ui", "0") == "1"
 
 def join_match_ui_enabled() -> bool:
-    return os.getenv("join_match_ui", "0") == "0"
+    return os.getenv("join_match_ui", "0") == "1"
