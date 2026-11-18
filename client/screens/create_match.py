@@ -6,6 +6,7 @@ from client.config import (
     DURATION_CHOICES,
     NAME_MAX_LENGTH
 )
+from client.player import Player
 from client.screens.base import Screen
 from client.widgets.button import Button
 from client.widgets.text_input import TextInput
@@ -47,12 +48,42 @@ class CreateMatchScreen(Screen):
             3
         )
 
-        # NOTE: add handle_input
+
+    def handle_input(self, event) -> None:
+        self.name_input.handle_input(event) # NOTE: ask about this
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                self.submit()
+            elif event.key == pygame.K_ESCAPE:
+                self.back()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for seconds, button in self.duration_buttons:
+                if button.check_for_input(event.pos):
+                    self.duration = seconds
+            if self.create_button.check_for_input(event.pos):
+                self.submit()
+            elif self.back_button.check_for_input(event.pos):
+                self.back()
+
+
+    def back(self) -> None:
+        from client.screens.home import HomeScreen  # local import avoids a cycle
+        self.app.switch_screen(HomeScreen)
+
+
+    def submit(self) -> None:
+        name = self.name_input.text.strip()
+        if not name:
+            self.error = "Enter a name"
+            return 
+        # TODO: server will try to create match
+        # self.app.player = Player()
+        # TODO: switch to waiting room screen
+    
 
     def draw(self) -> None:
         heading = self.fonts.heading.render("Create Match", True, TEXT_COLOR)
-        self.screen.blit(heading, heading.get_rect(
-        center=(self.center_x, int(self.screen.get_height() * 0.15))))
+        self.screen.blit(heading, heading.get_rect(center=(self.center_x, int(self.screen.get_height() * 0.15))))
         self.name_input.draw(self.screen)
 
         mouse = pygame.mouse.get_pos()
