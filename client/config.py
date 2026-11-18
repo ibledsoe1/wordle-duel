@@ -15,7 +15,7 @@ BODY_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "LibreFranklin-Var
 DEFAULT_DURATION = 180
 DURATION_CHOICES = (60, 120, 180, 240, 300)
 NAME_MAX_LENGTH = 20
-CODE_MAX_LENGTH = 16
+CODE_MAX_LENGTH = 6
 
 # == "0" -> currently enabled
 def home_ui_enabled() -> bool:
