@@ -3,10 +3,13 @@ from client.config import (
     TEXT_COLOR, 
     HOVER_COLOR,
     DEFAULT_DURATION,
-    DURATION_CHOICES,
     NAME_MAX_LENGTH,
-    CODE_MAX_LENGTH
+    CODE_MAX_LENGTH,
+    ERROR_COLOR,
 )
+from client import network
+from client.network import NetworkError
+from client.error_messages import error_text
 from client.player import Player
 from client.screens.base import Screen
 from client.widgets.button import Button
@@ -43,6 +46,7 @@ class JoinMatchScreen(Screen):
             padding,
             3
         )
+        self.error = ""
 
 
     def focus(self, target) -> None:
@@ -78,12 +82,22 @@ class JoinMatchScreen(Screen):
 
     def submit(self) -> None:
         name = self.name_input.text.strip()
+        code = self.code_input.text.strip()
         if not name:
             self.error = "Enter a name"
             return 
-        # TODO: server will try to create match
-        # self.app.player = Player()
-        # TODO: switch to waiting room screen
+        if not code:
+            self.error = "Enter a code"
+            return
+        try:
+            # NOTE: should I change code to match id maybe so it matches?
+            data = network.join_match(code, name)
+        except NetworkError as e:
+            self.error = error_text(e.error_name)
+            return
+        self.error = ""
+        self.app.player = Player(name, data["player_id"], data["match_id"])
+        # self.app.switch_screen(WaitingRoomScreen)        
     
 
     def draw(self) -> None:
@@ -99,3 +113,7 @@ class JoinMatchScreen(Screen):
 
         for text_input in (self.name_input, self.code_input):
             text_input.draw(self.screen)
+
+        if self.error:
+            text = self.fonts.body.render(self.error, True, ERROR_COLOR)
+            self.screen.blit(text, text.get_rect(center=(self.center_x, int(self.screen.get_height() * 0.75))))
