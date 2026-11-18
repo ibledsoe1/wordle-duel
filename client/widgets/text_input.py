@@ -19,7 +19,12 @@ class TextInput:
         label = self.font.render(shown, True, color if self.text else HOVER_COLOR)
         screen.blit(label, label.get_rect(midleft=(self.rect.left + 12, self.rect.centery)))
 
-    def handle_input(self, event) -> None:
+
+    def check_for_input(self, position):
+        return self.rect.collidepoint(position)
+
+
+    def handle_text_input(self, event) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             self.active = self.rect.collidepoint(event.pos)
         elif event.type == pygame.KEYDOWN and self.active:

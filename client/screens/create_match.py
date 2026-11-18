@@ -50,7 +50,8 @@ class CreateMatchScreen(Screen):
 
 
     def handle_input(self, event) -> None:
-        self.name_input.handle_input(event) # NOTE: ask about this
+        self.name_input.handle_text_input(event)
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 self.submit()
