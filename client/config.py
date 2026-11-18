@@ -7,10 +7,16 @@ WINDOW_TITLE = "Wordle Duel"
 WINDOW_SCALE = 0.8
 BACKGROUND_COLOR = (30, 30, 30)
 TEXT_COLOR = (240, 240, 240)
-HOVER_COLOR = (180, 180, 180)
+# HOVER_COLOR = (180, 180, 180)
+HOVER_COLOR = (108, 169, 101)
+ERROR_COLOR = (220, 80, 80)
 
 HEADER_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "ZillaSlab-Medium.ttf"
 BODY_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "LibreFranklin-VariableFont_wght.ttf"
+
+# For testing
+SERVER_URL = "http://127.0.0.1:8000"
+REQUEST_TIMEOUT = 3
 
 DEFAULT_DURATION = 180
 DURATION_CHOICES = (60, 120, 180, 240, 300)
