@@ -1,5 +1,6 @@
 import pygame
 from client.config import BACKGROUND_COLOR
+from client.player import Player
 
 class App:
     def __init__(self, screen, fonts):
@@ -7,6 +8,7 @@ class App:
         self.fonts = fonts
         self.running = True
         self.current_screen = None # The screen that gets drawn on the window surface
+        self.player = Player()
 
     def switch_screen(self, target_screen):
         self.current_screen = target_screen(self)
