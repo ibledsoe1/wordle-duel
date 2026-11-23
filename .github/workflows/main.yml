@@ -24,3 +24,28 @@ jobs:
  
       - name: Run tests
         run: uv run pytest
+
+  # For HW10 SDEV 3320
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/hw10-3320'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Build blue and green folders
+        run: |
+          for color in blue green; do
+            mkdir -p out/$color
+            cp -r client out/$color/client
+            cp deploy/$color/config.json out/$color/config.json
+          done
+          cp deploy/live_version.txt out/live_version.txt
+
+      - name: Upload deployment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-${{ github.sha }}
+          path: out/
+          retention-days: 7

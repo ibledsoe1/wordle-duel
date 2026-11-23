@@ -1,5 +1,5 @@
 """Client settings and feature flags."""
-import os
+import json
 from pathlib import Path
 
 WINDOW_TITLE = "Wordle Duel"
@@ -23,12 +23,18 @@ DURATION_CHOICES = (60, 120, 180, 240, 300)
 NAME_MAX_LENGTH = 20
 CODE_MAX_LENGTH = 6
 
-# == "0" -> currently enabled
+# For HW10 3320:
+DEPLOY_DIR = Path(__file__).parent.parent / "deploy"
+
+def live_flags() -> dict:
+    live = (DEPLOY_DIR / "live_version.txt").read_text().strip()
+    return json.loads((DEPLOY_DIR / live / "config.json").read_text())
+
 def home_ui_enabled() -> bool:
-    return os.getenv("home_ui", "0") == "0"
+    return live_flags()["home_ui"]
 
 def create_match_ui_enabled() -> bool:
-    return os.getenv("create_match_ui", "0") == "1"
+    return live_flags()["create_match_ui"]
 
 def join_match_ui_enabled() -> bool:
-    return os.getenv("join_match_ui", "0") == "1"
+    return live_flags()["join_match_ui"]
