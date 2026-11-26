@@ -47,7 +47,7 @@ class WaitingRoomScreen(Screen):
         heading = self.fonts.heading.render("Waiting Room", True, TEXT_COLOR)
         self.screen.blit(heading, heading.get_rect(center=(self.center_x, int(height * 0.15))))
 
-        code = self.fonts.body.render(f"Match code: {self.app.player.match_code}", True, TEXT_COLOR)
+        code = self.fonts.body.render(f"Match code: {self.app.player.match_id}", True, TEXT_COLOR)
         self.screen.blit(code, code.get_rect(center=(self.center_x, int(height * 0.4))))
 
         if self.phase == "waiting":
