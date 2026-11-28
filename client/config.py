@@ -13,6 +13,7 @@ ERROR_COLOR = (220, 80, 80)
 
 HEADER_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "ZillaSlab-Medium.ttf"
 BODY_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "LibreFranklin-VariableFont_wght.ttf"
+BOLD_FONT_PATH = Path(__file__).parent / "assets" / "fonts" / "LibreFranklin-Bold.ttf"
 
 # For testing
 SERVER_URL = "http://127.0.0.1:8000"
@@ -28,7 +29,7 @@ def home_ui_enabled() -> bool:
     return os.getenv("home_ui", "0") == "0"
 
 def create_match_ui_enabled() -> bool:
-    return os.getenv("create_match_ui", "0") == "1"
+    return os.getenv("create_match_ui", "0") == "0"
 
 def join_match_ui_enabled() -> bool:
-    return os.getenv("join_match_ui", "0") == "1"
+    return os.getenv("join_match_ui", "0") == "0"
